@@ -1,14 +1,28 @@
 import { useState } from 'react'
 import logo from './logo.svg'
-import './App.css'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import Home from './pages/Home';
+import Settings from './pages/Settings';
+
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div className="flex justify-center">
-      Hello world
-    </div>
+    <Router>
+      <Switch>
+        <Route path='/settings'>
+          <Settings />
+        </Route>
+        <Route path='/'>
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 
