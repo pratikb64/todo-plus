@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import logo from './logo.svg'
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,7 +8,6 @@ import Settings from './pages/Settings';
 
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <Router>
