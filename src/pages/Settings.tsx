@@ -24,13 +24,13 @@ const Settings = () => {
 									<span className='mb-2 text-sm font-semibold'>
 										First name
 									</span>
-									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="" id="" />
+									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="first_name" id="first_name" />
 								</div>
 								<div className='flex flex-col w-full'>
 									<span className='mb-2 text-sm font-semibold'>
 										Last name
 									</span>
-									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="" id="" />
+									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="last_name" id="last_name" />
 								</div>
 							</div>
 							<div>
@@ -38,7 +38,7 @@ const Settings = () => {
 									<span className='mb-2 text-sm font-semibold'>
 										Email address
 									</span>
-									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="" id="" />
+									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="email" id="email" />
 								</div>
 							</div>
 							<div>
@@ -46,7 +46,7 @@ const Settings = () => {
 									<span className='mb-2 text-sm font-semibold'>
 										Password
 									</span>
-									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="" id="" />
+									<input className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="password" id="password" />
 								</div>
 							</div>
 							<div></div>
@@ -68,7 +68,7 @@ const Settings = () => {
 								API key
 							</span>
 							<div className='w-full'>
-								<input className='p-2 bg-[#13151a] w-full border mb-3 border-gray-600/50 rounded-md mr-4 text-sm text-gray-300' defaultValue='f5s64fs6efxzvgh5jtyf12a1s89' type="text" name="" id="" />
+								<input className='p-2 bg-[#13151a] w-full border mb-3 border-gray-600/50 rounded-md mr-4 text-sm text-gray-300' defaultValue='f5s64fs6efxzvgh5jtyf12a1s89' type="text" name="api_key" id="api_key" />
 								<div className='flex w-full sm:block'>
 									<button className='p-2 bg-[#03c000b2] rounded-lg' hidden>Generate key</button>
 									<button className='w-full px-4 py-2 mr-3 text-sm bg-blue-600 rounded-lg sm:w-auto hover:bg-blue-700 active:bg-blue-800'>Copy</button>
