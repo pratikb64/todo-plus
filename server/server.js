@@ -10,7 +10,7 @@ const user = require('./routes/users')
 app.use(express.json())
 
 app.get('/', (req, res) => {
-	res.json({ message: 'Express server...' })
+	res.json({ message: 'Welcome to Todo plus server!' })
 })
 
 app.use('/', user)

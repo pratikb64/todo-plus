@@ -3,7 +3,7 @@ const router = express.Router();
 const { createHmac } = require('crypto');
 const secret = process.env.PASSWORD_SECRET;
 const User = require('../models/User')
-
+const jwt = require("jsonwebtoken");
 
 function isValidPassword(password) {
 	if (password.length >= 8) {
@@ -23,36 +23,52 @@ router.post('/login', async (req, res) => {
 	const { email, password } = req.body
 
 	if (!isValidEmail(email))
-		res.json({ message: "Malformatted request!" })
+		return res.status(406).json({ message: "Enter valid email address" })
 
 	const user = await User.findOne({ email })
 
-	const hash = createHmac('sha256', secret)
-		.update(user.password)
-		.digest('hex');
+	if (!user)
+		return res.status(404).json({ message: "User not found check your email address!" })
 
-	if (password === hash)
-		res.json({ message: "Login successfully!" })
+	const hash = createHmac('sha256', secret)
+		.update(password)
+		.digest('hex');
+	console.log(hash)
+	console.log(user.password)
+	if (user.password !== hash)
+		return res.status(400).json({ message: "Incorrect email or password!" })
+
+	const token = jwt.sign(
+		{ user_id: user._id, email },
+		process.env.JWT_SECRET,
+		{
+			expiresIn: "7d",
+		}
+	);
+
+	return res.json({ message: "Logged in successfully!", token: token })
 })
 
+
+
 router.post('/register', async (req, res) => {
-	const { email, first_name, last_name } = req.body
+	const { email, password, first_name, last_name } = req.body
 
 	if (!isValidEmail(email) || !isValidPassword(password))
-		res.json({ message: "Malformatted request!" })
+		return res.status(406).json({ message: "Invalid email or password!" })
 
 	const email_exists = await User.findOne({ email })
 	if (email_exists)
-		res.json({ message: 'Email already exists!' })
+		return res.status(409).json({ message: 'Email already exists!' })
 
-	const password = createHmac('sha256', secret)
-		.update(req.body.password)
+	const hash = createHmac('sha256', secret)
+		.update(password)
 		.digest('hex');
 
-	User.create({ email, password, first_name, last_name })
+	User.create({ email: email.toLowerCase(), password: hash, first_name, last_name })
 		.then(() => res.json({ message: 'Account created successfully!' })).catch(er => {
 			console.log(er)
-			res.status(500).json({ message: 'Server error try again later!' })
+			return res.status(500).json({ message: 'Server error try again later!' })
 		})
 
 })
