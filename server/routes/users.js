@@ -33,11 +33,11 @@ router.post('/login', async (req, res) => {
 	const hash = createHmac('sha256', secret)
 		.update(password)
 		.digest('hex');
-	console.log(hash)
-	console.log(user.password)
+
 	if (user.password !== hash)
 		return res.status(400).json({ message: "Incorrect email or password!" })
 
+	const sevenDaysToSeconds = 24 * 60 * 60 * 7;
 	const token = jwt.sign(
 		{ user_id: user._id, email },
 		process.env.JWT_SECRET,
@@ -46,7 +46,12 @@ router.post('/login', async (req, res) => {
 		}
 	);
 
-	return res.json({ message: "Logged in successfully!", token: token })
+	return res.cookie('session-token', token, {
+		maxAge: oneDayToSeconds,
+		httpOnly: true
+		/* ,
+		secure: process.env.NODE_ENV === 'production' ? true : false */
+	}).json({ message: "Logged in successfully!" })
 })
 
 

@@ -16,11 +16,11 @@ const Navbar = () => {
 					<div className='m-auto my-4 mb-2 max-w-[90vw] xl:max-w-7xl flex justify-between items-center text-white'>
 						<Link to='/'>
 							<div className='flex'>
-								<img className='mr-2 w-7 sm:w-9 ' src='/images/todo-plus-icon.svg' alt="Logo" />
-								<img className='hidden w-32 sm:block' src='/images/todo-plus.svg' alt="Logo" />
+								<img className='mr-2 w-7 sm:w-9 sm:hidden' src='/images/todo-plus-icon.svg' alt="Logo" />
+								<img className='hidden w-40 sm:block' src='/images/Logo.svg' alt="Logo" />
 							</div>
 						</Link>
-						<Disclosure.Button className="inline-flex items-center justify-center p-2 pr-0 text-gray-400 rounded-md sm:hidden hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+						<Disclosure.Button className="inline-flex items-center justify-center text-gray-400 rounded-md sm:hidden hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
 							<span className="sr-only">Open main menu</span>
 							{open ? (
 								<XIcon className="block w-6 h-6" aria-hidden="true" />
