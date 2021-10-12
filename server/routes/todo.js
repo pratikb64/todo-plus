@@ -22,7 +22,7 @@ router.post('/add-task', async (req, res) => {
 
 router.post('/get-todo-list', async (req, res) => {
 	const { list_id } = req.body
-	console.log(req.headers["authorization"])
+
 	const result = await Todo.find({ list_id: list_id })
 
 	return res.json({ result })

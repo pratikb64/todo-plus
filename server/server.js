@@ -8,6 +8,7 @@ require("./config/database").connect();
 
 const user = require('./routes/users')
 const todo = require('./routes/todo')
+const auth = require('./middlewares/auth')
 
 app.use(express.json())
 
@@ -16,6 +17,9 @@ app.get('/', (req, res) => {
 })
 
 app.use('/v1/user', user)
+
+app.use(auth)
+
 app.use('/v1/todo', todo)
 
 

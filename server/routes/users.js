@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
 	);
 
 	return res.cookie('session-token', token, {
-		maxAge: oneDayToSeconds,
+		maxAge: sevenDaysToSeconds,
 		httpOnly: true
 		/* ,
 		secure: process.env.NODE_ENV === 'production' ? true : false */
