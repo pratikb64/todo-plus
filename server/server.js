@@ -10,6 +10,11 @@ const user = require('./routes/users')
 const todo = require('./routes/todo')
 const auth = require('./middlewares/auth')
 
+app.use(cors({
+	origin: 'http://localhost:3000',
+	optionsSuccessStatus: 200,
+	credentials: true
+}))
 app.use(express.json())
 
 app.get('/', (req, res) => {

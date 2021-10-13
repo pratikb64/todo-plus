@@ -2,24 +2,25 @@ import React, { FormEvent, useRef, useState } from 'react'
 import { Navbar } from '../components'
 import { Link } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
+import axios from 'axios'
+import CONSTANTS from '../configs/Constants'
 
 const Register = () => {
 	const [eyeState, setEyeState] = useState(false)
 	const passwordInput = useRef<HTMLInputElement>(null)
-
 	let formData = {}
 
-	const isFormValid = () => {
-		return Boolean
-	}
 
 	const submitHandler = (event: FormEvent) => {
 		event.preventDefault();
-		if (isFormValid()) {
-			alert("Form submitted");
-		} else {
-			alert("Form has errors.")
-		}
+		axios({
+			url: CONSTANTS.BASE_URL + '/v1/user/register',
+			data: formData,
+			method: 'POST',
+			withCredentials: true
+		}).then(d => {
+			location.replace('/login')
+		})
 	}
 
 	const handleChange = (e: HTMLInputElement) => {
@@ -56,13 +57,13 @@ const Register = () => {
 										<span className='mb-2 text-sm font-semibold'>
 											First Name
 										</span>
-										<input onChange={event => handleChange(event.target)} className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="first_name" id="first_name" required />
+										<input pattern='^[a-zA-Z]+$' onChange={event => handleChange(event.target)} className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="first_name" id="first_name" required />
 									</div>
 									<div className='flex flex-col mx-1 my-6 sm:mx-6'>
 										<span className='mb-2 text-sm font-semibold'>
 											Last Name
 										</span>
-										<input onChange={event => handleChange(event.target)} className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="last_name" id="last_name" required />
+										<input pattern='^[a-zA-Z]+$' onChange={event => handleChange(event.target)} className='p-1 pl-2 bg-[#13151a] border border-gray-600/50 rounded-md' type="text" name="last_name" id="last_name" required />
 									</div>
 									<div className='flex flex-col mx-1 my-6 sm:mx-6'>
 										<span className='mb-2 text-sm font-semibold'>

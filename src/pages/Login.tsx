@@ -2,6 +2,8 @@ import React, { FormEvent, useRef, useState } from 'react'
 import { Navbar } from '../components'
 import { Link } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
+import axios from 'axios'
+import CONSTANTS from '../configs/Constants'
 
 const Login = () => {
 	const [eyeState, setEyeState] = useState(false)
@@ -10,7 +12,14 @@ const Login = () => {
 
 	const submitHandler = (event: FormEvent) => {
 		event.preventDefault();
-
+		axios({
+			url: CONSTANTS.BASE_URL + '/v1/user/login',
+			data: formData,
+			method: 'POST',
+			withCredentials: true
+		}).then(d => {
+			location.replace('/settings')
+		})
 	}
 
 	const handleChange = (e: HTMLInputElement) => {

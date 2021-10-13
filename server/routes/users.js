@@ -58,6 +58,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
 	const { email, password, first_name, last_name } = req.body
+	console.log(req.body)
 
 	if (!isValidEmail(email) || !isValidPassword(password))
 		return res.status(406).json({ message: "Invalid email or password!" })
