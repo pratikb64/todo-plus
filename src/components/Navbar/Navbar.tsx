@@ -33,7 +33,7 @@ const Navbar = () => {
 						</div>
 					</div>
 					<Disclosure.Panel className="sm:hidden">
-						<div className="w-full px-3 pb-3 my-2 space-y-1 bg-[#2A2C3E] border border-gray-700 rounded-lg">
+						<div className="w-full px-3 pb-3 my-2 space-y-1 bg-[#13151a] border border-gray-700 rounded-lg">
 							{navigation.map(nav => {
 								return <div key={nav.href}> <Link to={nav.href}>
 									<div key={nav.name} className={`flex mt-4 item-center cursor-pointer ${nav.name === 'Logout' && 'text-red-500'} `}>

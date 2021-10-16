@@ -5,6 +5,7 @@ import {
   Route
 } from "react-router-dom";
 import { LoadingModal } from './components';
+import { Toaster } from 'react-hot-toast';
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
@@ -17,6 +18,15 @@ function App() {
   return (
     <Suspense fallback={<LoadingModal />}>
       <Router>
+        <Toaster position='bottom-center' toastOptions={{
+          className: 'shadow-2xl',
+          style: {
+            background: '#13151a',
+            border: '1px solid rgba(255,255,255,0.1)',
+            color: '#fff',
+            minWidth: '150px'
+          }
+        }} />
         <Switch>
           <Route path='/settings'>
             <Settings />

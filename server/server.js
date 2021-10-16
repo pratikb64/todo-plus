@@ -15,6 +15,7 @@ app.use(cors({
 	optionsSuccessStatus: 200,
 	credentials: true
 }))
+app.use(cookieParser())
 app.use(express.json())
 
 app.get('/', (req, res) => {

@@ -22,7 +22,7 @@ const NavbarMenu = () => {
 					</div>
 				</Menu.Button>
 				<Menu.Items>
-					<div className='absolute z-10 drop-shadow-2xl w-full px-3 mt-2 bg-[#2A2C3E] border border-gray-700 rounded-xl'>
+					<div className='absolute z-10 drop-shadow-2xl w-full px-3 mt-2 bg-[#13151a] border border-gray-700 rounded-xl'>
 						{navigation.map(nav => {
 							return <Menu.Item key={nav.name}>
 								{({ active }) => (

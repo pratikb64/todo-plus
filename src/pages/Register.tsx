@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
 import axios from 'axios'
 import CONSTANTS from '../configs/Constants'
+import toast from 'react-hot-toast'
 
 const Register = () => {
 	const [eyeState, setEyeState] = useState(false)
@@ -13,14 +14,16 @@ const Register = () => {
 
 	const submitHandler = (event: FormEvent) => {
 		event.preventDefault();
+		const loader = toast.loading('Setting up your account!')
 		axios({
 			url: CONSTANTS.BASE_URL + '/v1/user/register',
 			data: formData,
 			method: 'POST',
 			withCredentials: true
 		}).then(d => {
+			toast.success('Account created!', { id: loader })
 			location.replace('/login')
-		})
+		}).catch(er => toast.error('Failed to create account!', { id: loader }))
 	}
 
 	const handleChange = (e: HTMLInputElement) => {
@@ -43,7 +46,7 @@ const Register = () => {
 					<div className='hidden w-2/5 md:block'>
 						<img className='w-full' src="/images/personal_info.svg" alt="" />
 					</div>
-					<div className='w-[95%] sm:w-3/4 m-auto md:m-0 md:w-1/2'>
+					<div className='w-[95%] sm:w-4/5 m-auto md:m-0 md:w-1/2'>
 						<form onSubmit={(event) => submitHandler(event)}>
 							<div className='m-auto md:w-4/5'>
 								<div className='md:ml-5 md:w-max'>
