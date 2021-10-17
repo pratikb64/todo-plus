@@ -22,7 +22,7 @@ const Login = () => {
 		})
 			.then((d) => {
 				toast.success("Logged in!", { id: loader });
-				location.replace("/settings");
+				location.replace("/");
 			})
 			.catch((er) => toast.error("Failed to login!", { id: loader }));
 	};

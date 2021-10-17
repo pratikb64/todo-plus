@@ -1,5 +1,5 @@
-import { LockClosedIcon, FingerPrintIcon } from '@heroicons/react/outline'
 import React from 'react'
+import { LockClosedIcon, FingerPrintIcon } from '@heroicons/react/outline'
 
 const EncryptedContentModal = () => {
 	return (

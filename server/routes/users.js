@@ -95,11 +95,18 @@ router.get("/", async (req, res) => {
   delete user.password;
   delete user.__v;
   return res.json({
+    user_id: user._id,
     first_name: user.first_name,
     last_name: user.last_name,
     email: user.email,
     api_key: user.api_key,
   });
+});
+
+router.get("/logout", async (req, res) => {
+  res
+    .clearCookie("session-token")
+    .json({ message: "Logged out successfully!" });
 });
 
 router.get("/api-key", async (req, res) => {

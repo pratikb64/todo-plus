@@ -1,13 +1,23 @@
 import { Menu } from '@headlessui/react'
 import { CogIcon, ChevronDownIcon, LogoutIcon, UserIcon } from '@heroicons/react/outline'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
+import CONSTANTS from '../../configs/Constants'
 
-const NavbarMenu = () => {
+const NavbarMenu = ({ authenticated, first_name, last_name }) => {
 
 	const navigation = [
 		{ name: 'Settings', href: '/settings', icon: <CogIcon /> },
 		{ name: 'Logout', href: '', icon: <LogoutIcon /> },
 	]
+
+	const logoutHandler = () => {
+		axios({
+			url: CONSTANTS.BASE_URL + "/v1/user/logout",
+			method: "GET",
+			withCredentials: true,
+		}).then(() => location.reload())
+	}
 
 	return (
 		<div className='relative w-max'>
@@ -15,7 +25,7 @@ const NavbarMenu = () => {
 				<Menu.Button className='flex'>
 					<UserIcon className='w-6' />
 					<span className='hidden mr-2 text-lg sm:block'>
-						Username
+						{first_name + ' ' + last_name}
 					</span>
 					<div className='w-7'>
 						<ChevronDownIcon />
@@ -27,7 +37,7 @@ const NavbarMenu = () => {
 							return <Menu.Item key={nav.name}>
 								{({ active }) => (
 									<Link to={nav.href}>
-										<div className={`flex my-4 item-center cursor-pointer ${nav.name === 'Logout' && 'text-red-500'}`}>
+										<div onClick={nav.name === 'Logout' ? () => logoutHandler() : null} className={`flex my-4 item-center cursor-pointer ${nav.name === 'Logout' && 'text-red-500'}`}>
 											<div className='w-5 mr-2'>
 												{nav.icon}
 											</div>
