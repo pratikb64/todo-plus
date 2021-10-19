@@ -1,31 +1,38 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Todo = require('../models/Todo')
-const { ObjectId } = require('mongodb')
+const Todo = require("../models/Todo");
+const { ObjectId } = require("mongodb");
 
-router.post('/create-todo-list', async (req, res) => {
-	const { user_id } = req.body
+router.post("/create-todo-list", async (req, res) => {
+  const { visibility, secret_code } = req.body;
 
-	console.log({ user_id })
+  //return res.json({ message: "Task list created!" });
+});
 
-	return res.json({ message: "Task list created!" })
-})
+router.post("/add-task", async (req, res) => {
+  const { user_id, task, list_id } = req.body;
+  console.log({ user_id, task });
 
-router.post('/add-task', async (req, res) => {
-	const { user_id, task, list_id } = req.body
-	console.log({ user_id, task })
+  const result = await Todo.find({ list_id: list_id });
 
-	await Todo.updateOne({ _id: ObjectId(list_id) }, { $push: { tasks: task } }, { upsert: true })
+  /* await Todo.updateOne(
+    { _id: ObjectId(list_id), user_id },
+    { $push: { tasks: task } },
+    { upsert: true }
+  ); */
 
-	return res.json({ message: "Task saved!" })
-})
+  return res.json({ message: "Task saved!" });
+});
 
-router.post('/get-todo-list', async (req, res) => {
-	const { list_id } = req.body
+router.post("/get-todo-list", async (req, res) => {
+  const { list_id } = req.body;
 
-	const result = await Todo.find({ list_id: list_id })
+  const result = await Todo.find({ list_id: list_id });
 
-	return res.json({ result })
-})
+  if (result.visibility === "private")
+    return res.status(403).json({ message: "Private tasks list!" });
+
+  return res.json({ tasks_data: result[0] });
+});
 
 module.exports = router;

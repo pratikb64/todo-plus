@@ -3,6 +3,7 @@ import { auth } from "../types";
 
 const authState: auth = {
 	authenticated: false,
+	isLoading: true,
 	user_id: '',
 	first_name: '',
 	last_name: '',

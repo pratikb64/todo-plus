@@ -2,37 +2,40 @@ import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { LoadingModal, Navbar } from "../components";
 import CONSTANTS from "../configs/Constants";
+import { RootState } from "../redux/store";
 
 const Settings = () => {
+	const { email, first_name, last_name, api_key } = useSelector((state: RootState) => state.auth.authState)
 	const [formInputs, setFormInputs] = useState({
-		first_name: "",
-		last_name: "",
-		email: "",
-		api_key: "",
+		first_name: first_name,
+		last_name: last_name,
+		email: email,
+		api_key: api_key,
 	});
 	const [eyeState, setEyeState] = useState(false);
 	const api_key_Ref = useRef<HTMLInputElement>(null);
 	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		axios({
-			url: CONSTANTS.BASE_URL + "/v1/user",
-			method: "GET",
-			withCredentials: true,
-		})
-			.then((d) => {
-				setFormInputs({
-					first_name: d.data["first_name"],
-					last_name: d.data["last_name"],
-					email: d.data["email"],
-					api_key: d.data["api_key"],
-				});
-				setIsLoading(false);
+	/* 
+		useEffect(() => {
+			axios({
+				url: CONSTANTS.BASE_URL + "/v1/user",
+				method: "GET",
+				withCredentials: true,
 			})
-			.catch((er) => setIsLoading(false));
-	}, []);
+				.then((d) => {
+					setFormInputs({
+						first_name: d.data["first_name"],
+						last_name: d.data["last_name"],
+						email: d.data["email"],
+						api_key: d.data["api_key"],
+					});
+					setIsLoading(false);
+				})
+				.catch((er) => setIsLoading(false));
+		}, []); */
 
 	const togglePasswordVisibility = () => {
 		setEyeState(!eyeState);
@@ -77,7 +80,7 @@ const Settings = () => {
 	return (
 		<div className="m-auto max-w-[90vw] xl:max-w-7xl">
 			<Navbar />
-			{isLoading && <LoadingModal />}
+			{/* {isLoading && <LoadingModal />} */}
 			<div>
 				<div className="max-w-3xl m-auto mt-5 sm:mt-16">
 					<div className="flex flex-col mb-4 sm:flex-row">
