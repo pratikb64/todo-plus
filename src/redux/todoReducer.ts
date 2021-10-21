@@ -9,6 +9,9 @@ const todoStateReducer = createSlice({
 		addTask: (state, action) => {
 			state.push(action.payload);
 		},
+		setTasksList: (state, action) => {
+			return state.concat(action.payload)
+		},
 		updateTask: (state, action) => {
 			return state.map((todo) => {
 				if (todo.id === action.payload.id) {
@@ -27,5 +30,5 @@ const todoStateReducer = createSlice({
 })
 
 
-export const { addTask, updateTask, removeTask } = todoStateReducer.actions;
+export const { addTask, setTasksList, updateTask, removeTask } = todoStateReducer.actions;
 export const todoReducer = todoStateReducer.reducer;

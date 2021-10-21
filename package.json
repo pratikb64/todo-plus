@@ -6,8 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "server": "nodemon server/server.js",
-    "heroku-postbuild": "node server/server.js"
+    "server": "nodemon server/server.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",

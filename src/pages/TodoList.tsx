@@ -1,14 +1,16 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { Navbar, TodoListNotFound } from '../components'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navbar, TodoInput, TodoListItem, TodoListNotFound } from '../components'
 import CONSTANTS from '../configs/Constants'
 import { setLoading } from '../redux/appReducer'
 import { setAuth } from '../redux/authReducer'
-import { AppDispatch } from '../redux/store'
+import { AppDispatch, RootState } from '../redux/store'
+import { setTasksList, updateTask } from '../redux/todoReducer'
 
 const TodoList = (props) => {
 	const list_id = props.match.params.id
+	const { todoList } = useSelector((state: RootState) => state)
 	const dispatch = useDispatch<AppDispatch>()
 	//dispatch(setLoading(false))
 
@@ -20,7 +22,8 @@ const TodoList = (props) => {
 			data: { list_id }
 		})
 			.then((d) => {
-				console.log(d.data)
+				let tasks = d.data['tasks_data']['tasks']
+				dispatch(setTasksList(tasks))
 				dispatch(setLoading(false))
 			})
 			.catch(() => dispatch(setLoading(false)));
@@ -29,6 +32,17 @@ const TodoList = (props) => {
 	return (
 		<div className='m-auto max-w-[90vw] xl:max-w-7xl'>
 			<Navbar />
+			<div>
+				<div className='max-w-lg m-auto mt-5 sm:mt-16'>
+					<TodoInput />
+					<div className='w-full h-[1px] bg-gray-600 my-7'></div>
+					{todoList.map(task => {
+						return <div className='mb-3' key={task.task_id} >
+							<TodoListItem data={task} />
+						</div>
+					})}
+				</div>
+			</div>
 			{/*  *** *** *** Error component *** *** ***
 			<div className='mt-24'>
 				<TodoListNotFound />

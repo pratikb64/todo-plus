@@ -12,8 +12,8 @@ const TodoInput = () => {
 		const input = taskInput.current
 		if (input.value.trim() !== '')
 			dispatch(addTask({
-				id: Math.ceil(Math.random() * 100000000 + Math.random() * 100000000),
-				data: input.value.trim(),
+				task_id: Math.ceil(Math.random() * 100000000 + Math.random() * 100000000),
+				text: input.value.trim(),
 				done: false,
 			}))
 		input.value = ''
