@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Todo = require("../models/Todo");
 const { ObjectId } = require("mongodb");
+const { v4: uuidv4 } = require("uuid");
 
 router.post("/create-todo-list", async (req, res) => {
   const { visibility, secret_code } = req.body;
+  const list_id = uuidv4();
 
-  //return res.json({ message: "Task list created!" });
+  return res.json({ list_id: list_id });
 });
 
 router.post("/add-task", async (req, res) => {

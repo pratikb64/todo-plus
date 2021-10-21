@@ -14,7 +14,7 @@ const todoStateReducer = createSlice({
 		},
 		updateTask: (state, action) => {
 			return state.map((todo) => {
-				if (todo.id === action.payload.id) {
+				if (todo.task_id === action.payload.task_id) {
 					return {
 						...todo,
 						...action.payload,
@@ -24,7 +24,7 @@ const todoStateReducer = createSlice({
 			});
 		},
 		removeTask: (state, action) => {
-			return state.filter(task => task.id !== action.payload.id)
+			return state.filter(task => task.task_id !== action.payload.task_id)
 		}
 	}
 })

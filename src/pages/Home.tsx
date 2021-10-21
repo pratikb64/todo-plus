@@ -1,9 +1,34 @@
-import { useSelector } from 'react-redux'
+import axios from 'axios'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, TodoInput, TodoListItem } from '../components'
-import { RootState } from '../redux/store'
+import CONSTANTS from '../configs/Constants'
+import { setLoading } from '../redux/appReducer'
+import { setAuth } from '../redux/authReducer'
+import { AppDispatch, RootState } from '../redux/store'
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
-	const { todoList } = useSelector((state: RootState) => state)
+	const { todoList, auth } = useSelector((state: RootState) => state)
+	const dispatch = useDispatch<AppDispatch>()
+	let history = useHistory();
+
+	useEffect(() => {
+		if (auth.authState.authenticated) {
+			setLoading(true)
+			axios({
+				url: CONSTANTS.BASE_URL + "/v1/todo/create-todo-list",
+				method: "POST",
+				withCredentials: true,
+				data: { visibility: 'private', secret_code: null }
+			})
+				.then((d) => {
+					history.push("/t/" + d.data['list_id'])
+					dispatch(setLoading(false))
+				})
+				.catch(() => dispatch(setLoading(false)));
+		}
+	}, [])
 
 	return (
 		<div className='m-auto max-w-[90vw] xl:max-w-7xl'>
@@ -13,7 +38,7 @@ const Home = () => {
 					<TodoInput />
 					<div className='w-full h-[1px] bg-gray-600 my-7'></div>
 					{todoList.map(task => {
-						return <div className='mb-3' key={task.id} >
+						return <div className='mb-3' key={task.task_id} >
 							<TodoListItem data={task} />
 						</div>
 					})}

@@ -1,6 +1,6 @@
 import React, { FormEvent, useRef, useState } from "react";
 import { Navbar } from "../components";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 import axios from "axios";
 import CONSTANTS from "../configs/Constants";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 const Login = () => {
 	const [eyeState, setEyeState] = useState(false);
 	const passwordInput = useRef<HTMLInputElement>(null);
+	let history = useHistory();
 	let formData = {};
 
 	const submitHandler = (event: FormEvent) => {
@@ -22,7 +23,7 @@ const Login = () => {
 		})
 			.then((d) => {
 				toast.success("Logged in!", { id: loader });
-				location.replace("/");
+				history.push("/");
 			})
 			.catch((er) => toast.error("Failed to login!", { id: loader }));
 	};
