@@ -7,17 +7,27 @@ const { v4: uuidv4 } = require("uuid");
 router.post("/create-todo-list", async (req, res) => {
   const { visibility, secret_code } = req.body;
   const list_id = uuidv4();
+  const { user_id } = req.user;
+  const date = Date.now();
+
+  await Todo.create({
+    user_id,
+    list_id,
+    visibility,
+    secret_code,
+    date_created: date,
+  });
 
   return res.json({ list_id: list_id });
 });
 
 router.post("/add-task", async (req, res) => {
-  const { user_id, task, list_id } = req.body;
-  console.log({ user_id, task });
+  const { task, list_id } = req.body;
+  console.log({ task });
 
-  const result = await Todo.find({ list_id: list_id });
+  /* const result = await Todo.find({ list_id: list_id });
 
-  /* await Todo.updateOne(
+  await Todo.updateOne(
     { _id: ObjectId(list_id), user_id },
     { $push: { tasks: task } },
     { upsert: true }

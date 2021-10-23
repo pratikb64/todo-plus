@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navbar, TodoInput, TodoListItem } from '../components'
+import { Navbar, TodoInput, TodoListItem, Dashboard } from '../components'
 import CONSTANTS from '../configs/Constants'
 import { setLoading } from '../redux/appReducer'
 import { setAuth } from '../redux/authReducer'
@@ -10,31 +10,16 @@ import { useHistory } from "react-router-dom";
 
 const Home = () => {
 	const { todoList, auth } = useSelector((state: RootState) => state)
+	const { isAuthenticated } = auth.authState
 	const dispatch = useDispatch<AppDispatch>()
 	let history = useHistory();
 
-	useEffect(() => {
-		if (auth.authState.authenticated) {
-			setLoading(true)
-			axios({
-				url: CONSTANTS.BASE_URL + "/v1/todo/create-todo-list",
-				method: "POST",
-				withCredentials: true,
-				data: { visibility: 'private', secret_code: null }
-			})
-				.then((d) => {
-					history.push("/t/" + d.data['list_id'])
-					dispatch(setLoading(false))
-				})
-				.catch(() => dispatch(setLoading(false)));
-		}
-	}, [])
 
 	return (
 		<div className='m-auto max-w-[90vw] xl:max-w-7xl'>
 			<Navbar />
 			<div>
-				<div className='max-w-lg m-auto mt-5 sm:mt-16'>
+				{isAuthenticated ? <Dashboard /> : <div className='max-w-lg m-auto mt-5 sm:mt-16'>
 					<TodoInput />
 					<div className='w-full h-[1px] bg-gray-600 my-7'></div>
 					{todoList.map(task => {
@@ -42,7 +27,7 @@ const Home = () => {
 							<TodoListItem data={task} />
 						</div>
 					})}
-				</div>
+				</div>}
 			</div>
 		</div>
 	)

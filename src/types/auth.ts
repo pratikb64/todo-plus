@@ -1,5 +1,5 @@
 export default interface auth {
-	authenticated: boolean,
+	isAuthenticated: boolean,
 	isLoading: boolean,
 	user_id: string,
 	first_name: string,

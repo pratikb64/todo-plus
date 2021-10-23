@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, TodoInput, TodoListItem, TodoListNotFound } from '../components'
 import CONSTANTS from '../configs/Constants'
@@ -7,11 +7,13 @@ import { setLoading } from '../redux/appReducer'
 import { setAuth } from '../redux/authReducer'
 import { AppDispatch, RootState } from '../redux/store'
 import { setTasksList, updateTask } from '../redux/todoReducer'
+import { DocumentAddIcon } from '@heroicons/react/outline'
 
 const TodoList = (props) => {
 	const list_id = props.match.params.id
 	const { todoList } = useSelector((state: RootState) => state)
 	const dispatch = useDispatch<AppDispatch>()
+	const [error, setError] = useState(false)
 	//dispatch(setLoading(false))
 
 	useEffect(() => {
@@ -36,17 +38,21 @@ const TodoList = (props) => {
 				<div className='max-w-lg m-auto mt-5 sm:mt-16'>
 					<TodoInput />
 					<div className='w-full h-[1px] bg-gray-600 my-7'></div>
-					{todoList.map(task => {
+					{todoList.length > 0 ? todoList.map(task => {
 						return <div className='mb-3' key={task.task_id} >
 							<TodoListItem data={task} />
 						</div>
-					})}
+					}) :
+						<div className='flex flex-col items-center w-full'>
+							<DocumentAddIcon className='mb-2 text-gray-400 w-14' />
+							<div className='m-auto text-2xl w-max'>Add your first task!</div>
+						</div>}
 				</div>
 			</div>
-			{/*  *** *** *** Error component *** *** ***
-			<div className='mt-24'>
-				<TodoListNotFound />
-			</div> */}
+			{error &&
+				<div className='mt-24'>
+					<TodoListNotFound />
+				</div>}
 		</div>
 	)
 }

@@ -8,7 +8,7 @@ import axios from 'axios'
 import CONSTANTS from '../../configs/Constants'
 
 const Navbar = () => {
-	const { authenticated, first_name, last_name } = useSelector((state: RootState) => state.auth.authState)
+	const { isAuthenticated, first_name, last_name } = useSelector((state: RootState) => state.auth.authState)
 
 	const navigation = [
 		{ name: 'Login', href: '/login', icon: <LoginIcon /> },
@@ -45,7 +45,7 @@ const Navbar = () => {
 							)}
 						</Disclosure.Button>
 						<div className='hidden sm:block'>
-							{authenticated ? <NavbarMenu authenticated={authenticated} first_name={first_name} last_name={last_name} /> :
+							{isAuthenticated ? <NavbarMenu isAuthenticated={isAuthenticated} first_name={first_name} last_name={last_name} /> :
 								<div className='flex justify-between w-36'>
 									<Link to='/login'>
 										Login
@@ -59,9 +59,9 @@ const Navbar = () => {
 					<Disclosure.Panel className="sm:hidden">
 						<div className="w-full px-3 pb-3 my-2 space-y-1 bg-[#13151a] border border-gray-700 rounded-lg">
 							{navigation.map(nav => {
-								if (authenticated && (nav.name === 'Login' || nav.name === 'Register'))
+								if (isAuthenticated && (nav.name === 'Login' || nav.name === 'Register'))
 									return
-								if (!authenticated && (nav.name === 'Settings' || nav.name === 'Logout'))
+								if (!isAuthenticated && (nav.name === 'Settings' || nav.name === 'Logout'))
 									return
 								return <div key={nav.href}> <Link to={nav.href}>
 									<div onClick={nav.name === 'Logout' ? () => logoutHandler() : null} key={nav.name} className={`flex mt-4 item-center cursor-pointer ${nav.name === 'Logout' && 'text-red-500'} `}>

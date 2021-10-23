@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import CONSTANTS from '../../configs/Constants'
 
-const NavbarMenu = ({ authenticated, first_name, last_name }) => {
+const NavbarMenu = ({ isAuthenticated, first_name, last_name }) => {
 
 	const navigation = [
 		{ name: 'Settings', href: '/settings', icon: <CogIcon /> },

@@ -5,7 +5,7 @@ import { LoadingModal } from "..";
 import { RootState } from "../../redux/store";
 
 function ProtectedRoute({ component: Component, ...restOfProps }) {
-	const { authenticated, isLoading } = useSelector((state: RootState) => state.auth.authState)
+	const { isAuthenticated, isLoading } = useSelector((state: RootState) => state.auth.authState)
 
 	if (isLoading) {
 		return <LoadingModal />
@@ -15,7 +15,7 @@ function ProtectedRoute({ component: Component, ...restOfProps }) {
 		<Route
 			{...restOfProps}
 			render={(props) =>
-				authenticated ? <Component {...props} /> : <Redirect to="/login" />
+				isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
 			}
 		/>
 	);
