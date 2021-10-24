@@ -56,7 +56,7 @@ function App() {
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
           <Route path='/reset-password' component={ResetPassword} />
-          <Route path='/t/:id' component={TodoList} />
+          <Route path='/list/:id' component={TodoList} />
           <Route path='/' component={Home} />
         </Switch>
       </Router>
