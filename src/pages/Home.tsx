@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import { Navbar, TodoInput, TodoListItem, Dashboard } from '../components'
 import { RootState } from '../redux/store'
 
-
 const Home = () => {
 	const { todoList, auth } = useSelector((state: RootState) => state)
 	const { isAuthenticated } = auth.authState

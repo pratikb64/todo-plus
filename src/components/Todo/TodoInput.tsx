@@ -1,24 +1,45 @@
 import { PlusIcon } from '@heroicons/react/outline'
+import axios from 'axios'
 import { useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from '../../redux/store'
+import toast from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
+import CONSTANTS from '../../configs/Constants'
+import { AppDispatch, RootState } from '../../redux/store'
 import { addTask } from '../../redux/todoReducer'
 
-const TodoInput = () => {
+const TodoInput = (list_id = null) => {
+	const isAuthenticated = useSelector((state: RootState) => state.auth.authState.isAuthenticated)
 	const taskInput = useRef<HTMLInputElement>(null)
 	const dispatch = useDispatch<AppDispatch>()
 
 	const addButtonHandler = () => {
 		const input = taskInput.current
-		if (input.value.trim() !== '')
-			dispatch(addTask({
+		if (input.value.trim() !== '') {
+			let data = {
 				task_id: Math.ceil(Math.random() * 100000000 + Math.random() * 100000000),
 				text: input.value.trim(),
 				done: false,
-			}))
+			}
+			if (isAuthenticated) {
+				axios({
+					url: CONSTANTS.BASE_URL + "/v1/todo/add-task",
+					method: "POST",
+					withCredentials: true,
+					data: { task: data, list_id },
+				})
+					.then((d) => {
+						dispatch(addTask(data))
+						location.href = '/'
+					})
+			}
+			else {
+				dispatch(addTask(data))
+			}
+		}
 		input.value = ''
 		input.focus()
 	}
+
 
 	return (
 		<>

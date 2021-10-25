@@ -43,6 +43,8 @@ router.post("/get-todo-list", async (req, res) => {
 
   const result = await Todo.find({ list_id: list_id });
 
+  if (!result[0]) return res.status(404).json({ message: "List not found!" });
+
   if (result.visibility === "private")
     return res.status(403).json({ message: "Private tasks list!" });
 

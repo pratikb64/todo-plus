@@ -28,31 +28,37 @@ const TodoList = (props) => {
 				dispatch(setTasksList(tasks))
 				dispatch(setLoading(false))
 			})
-			.catch(() => dispatch(setLoading(false)));
+			.catch(() => {
+				setError(true)
+				dispatch(setLoading(false))
+			});
 	}, []);
 
 	return (
 		<div className='m-auto max-w-[90vw] xl:max-w-7xl'>
 			<Navbar />
-			<div>
-				<div className='max-w-lg m-auto mt-5 sm:mt-16'>
-					<TodoInput />
-					<div className='w-full h-[1px] bg-gray-600 my-7'></div>
-					{todoList.length > 0 ? todoList.map(task => {
-						return <div className='mb-3' key={task.task_id} >
-							<TodoListItem data={task} />
-						</div>
-					}) :
-						<div className='flex flex-col items-center w-full'>
-							<DocumentAddIcon className='mb-2 text-gray-400 w-14' />
-							<div className='m-auto text-2xl w-max'>Add your first task!</div>
-						</div>}
-				</div>
-			</div>
-			{error &&
+			{error ?
+				//If list not found show error
 				<div className='mt-24'>
 					<TodoListNotFound />
-				</div>}
+				</div> :
+				//Else show tasks
+				<div>
+					<div className='max-w-lg m-auto mt-5 sm:mt-16'>
+						<TodoInput list_id={list_id} />
+						<div className='w-full h-[1px] bg-gray-600 my-7'></div>
+						{todoList.length > 0 ? todoList.map(task => {
+							return <div className='mb-3' key={task.task_id} >
+								<TodoListItem data={task} />
+							</div>
+						}) :
+							<div className='flex flex-col items-center w-full'>
+								<DocumentAddIcon className='mb-2 text-gray-400 w-14' />
+								<div className='m-auto text-2xl w-max'>Add your first task!</div>
+							</div>}
+					</div>
+				</div>
+			}
 		</div>
 	)
 }
