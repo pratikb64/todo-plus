@@ -10,7 +10,7 @@ const todoStateReducer = createSlice({
 			state.push(action.payload);
 		},
 		setTasksList: (state, action) => {
-			return state.concat(action.payload)
+			return [...action.payload]
 		},
 		updateTask: (state, action) => {
 			return state.map((todo) => {

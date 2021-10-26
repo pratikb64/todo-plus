@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import CONSTANTS from '../../configs/Constants'
 import { AppDispatch, RootState } from '../../redux/store'
 import { addTask } from '../../redux/todoReducer'
+import { v4 as uuid } from 'uuid'
 
 const TodoInput = (list_id = null) => {
 	const isAuthenticated = useSelector((state: RootState) => state.auth.authState.isAuthenticated)
@@ -16,10 +17,11 @@ const TodoInput = (list_id = null) => {
 		const input = taskInput.current
 		if (input.value.trim() !== '') {
 			let data = {
-				task_id: Math.ceil(Math.random() * 100000000 + Math.random() * 100000000),
+				task_id: uuid(),
 				text: input.value.trim(),
 				done: false,
 			}
+			dispatch(addTask(data))
 			if (isAuthenticated) {
 				axios({
 					url: CONSTANTS.BASE_URL + "/v1/todo/add-task",
@@ -27,13 +29,6 @@ const TodoInput = (list_id = null) => {
 					withCredentials: true,
 					data: { task: data, list_id },
 				})
-					.then((d) => {
-						dispatch(addTask(data))
-						location.href = '/'
-					})
-			}
-			else {
-				dispatch(addTask(data))
 			}
 		}
 		input.value = ''

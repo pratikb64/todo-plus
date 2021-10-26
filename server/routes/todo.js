@@ -4,6 +4,7 @@ const Todo = require("../models/Todo");
 const { ObjectId } = require("mongodb");
 const { v4: uuidv4 } = require("uuid");
 
+//Create new todo list
 router.post("/create-todo-list", async (req, res) => {
   const { visibility, secret_code } = req.body;
   const list_id = uuidv4();
@@ -21,23 +22,52 @@ router.post("/create-todo-list", async (req, res) => {
   return res.json({ list_id: list_id });
 });
 
+//Add task in todo list
 router.post("/add-task", async (req, res) => {
   const { task, list_id } = req.body;
   const { user_id } = req.user;
 
-  console.log({ task });
+  const result = await Todo.find({ list_id: list_id.list_id });
 
-  /*const result = await Todo.find({ list_id: list_id });
-  
   await Todo.updateOne(
-    { _id: ObjectId(list_id), user_id },
-    { $push: { tasks: task } },
-    { upsert: true }
-  ); */
+    { list_id: list_id.list_id },
+    { $push: { tasks: task } }
+  );
 
   return res.json({ message: "Task saved!" });
 });
 
+//Remove task in todo list
+router.post("/remove-task", async (req, res) => {
+  const { task_id, list_id } = req.body;
+
+  await Todo.updateOne(
+    { list_id: list_id },
+    { $pull: { tasks: { task_id: task_id } } }
+  );
+
+  return res.json({ message: "Task removed!" });
+});
+
+router.post("/update-task", async (req, res) => {
+  const { task_id, list_id, text = null, done = null } = req.body;
+
+  if (text)
+    await Todo.updateOne(
+      { list_id: list_id, "tasks.task_id": task_id },
+      { $set: { "tasks.$.text": text } }
+    );
+
+  if (done)
+    await Todo.updateOne(
+      { list_id: list_id, "tasks.task_id": task_id },
+      { $set: { "tasks.$.done": done === "true" } }
+    );
+
+  res.json({});
+});
+
+//Get todo list by list id
 router.post("/get-todo-list", async (req, res) => {
   const { list_id } = req.body;
 
@@ -51,6 +81,7 @@ router.post("/get-todo-list", async (req, res) => {
   return res.json({ tasks_data: result[0] });
 });
 
+//Remove todo list by list id
 router.post("/remove-todo-list", async (req, res) => {
   const { list_id } = req.body;
   const { user_id } = req.user;
@@ -60,6 +91,7 @@ router.post("/remove-todo-list", async (req, res) => {
   return res.json({ tasks_data: result[0] });
 });
 
+//Get all todo list of user by user id
 router.get("/get-todo-lists", async (req, res) => {
   const { user_id } = req.user;
 
