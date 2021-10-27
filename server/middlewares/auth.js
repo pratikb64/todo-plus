@@ -8,8 +8,9 @@ const verifyToken = async (req, res, next) => {
 
   if (api_key) {
     let isKeyValid = await User.findOne({ api_key: api_key });
-
+    req.user = {};
     if (isKeyValid) {
+      req.api_key = api_key;
       req.user.user_id = isKeyValid._id;
       req.user.email = isKeyValid.email;
       return next();

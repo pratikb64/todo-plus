@@ -6,6 +6,7 @@ import { debounce } from ".."
 import CONSTANTS from "../../configs/Constants"
 import { AppDispatch, RootState } from "../../redux/store"
 import { removeTask, updateTask } from "../../redux/todoReducer"
+import toast from 'react-hot-toast'
 
 const TodoListItem = ({ data, list_id = null }) => {
 	const isAuthenticated = useSelector((state: RootState) => state.auth.authState.isAuthenticated)
@@ -21,19 +22,22 @@ const TodoListItem = ({ data, list_id = null }) => {
 				method: "POST",
 				withCredentials: true,
 				data: { task_id: data.task_id, list_id, text: inputData },
-			})
+			}).then(() => toast.success('Changes saved!'))
+				.catch(er => toast.error(er))
 		}
 	}
 
 	const removeHandler = () => {
 		dispatch(removeTask({ task_id: data.task_id }))
 		if (isAuthenticated) {
+			const loading = toast.loading('Deleting task!')
 			axios({
 				url: CONSTANTS.BASE_URL + "/v1/todo/remove-task",
 				method: "POST",
 				withCredentials: true,
 				data: { task_id: data.task_id, list_id },
-			})
+			}).then(() => toast.success('Task deleted!', { id: loading }))
+				.catch(er => toast.error(er, { id: loading }))
 		}
 	}
 
@@ -60,7 +64,7 @@ const TodoListItem = ({ data, list_id = null }) => {
 				}
 			</div>
 			<div className='flex items-center w-11/12 ml-2 overflow-hidden rounded-lg sm:w-full sm:rounded-xl drop-shadow-xl'>
-				<input ref={taskText} onChange={debounce(() => handleChange(), 2000)} defaultValue={data.text} className='box-content pl-4 w-full bg-[#2A2C3E] focus:bg-[#2a2c3ee1] outline-none h-9 sm:h-11' type="text" />
+				<input ref={taskText} onChange={debounce(() => handleChange(), 2000)} defaultValue={data.text} className={`box-content pl-4 w-full bg-[#2A2C3E] focus:bg-[#2a2c3ee1] outline-none h-9 sm:h-11 ${data.done && 'line-through text-gray-500'}`} type="text" />
 				<button onClick={() => removeHandler()} className='h-full p-2 bg-red-500 sm:p-3 hover:bg-red-600 active:bg-red-700 '>
 					<TrashIcon className='w-5' />
 				</button>

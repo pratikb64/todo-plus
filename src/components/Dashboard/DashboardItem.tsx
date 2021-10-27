@@ -1,6 +1,7 @@
 import { TrashIcon } from '@heroicons/react/outline'
 import axios from 'axios'
 import React from 'react'
+import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import CONSTANTS from '../../configs/Constants'
@@ -11,6 +12,7 @@ const DashboardItem = ({ index, date, list_id }) => {
 	const dispatch = useDispatch<AppDispatch>()
 
 	const deleteHandler = () => {
+		const loading = toast.loading('Deleting todo list!')
 		axios({
 			url: CONSTANTS.BASE_URL + "/v1/todo/remove-todo-list",
 			method: "POST",
@@ -18,8 +20,10 @@ const DashboardItem = ({ index, date, list_id }) => {
 			data: { list_id: list_id }
 		})
 			.then((d) => {
+				toast.success('Todo list deleted!', { id: loading })
 				dispatch(removeList({ list_id: list_id }))
 			})
+			.catch(er => toast.error(er, { id: loading }))
 	}
 
 	return (

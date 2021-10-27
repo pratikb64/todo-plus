@@ -26,23 +26,25 @@ router.post("/create-todo-list", async (req, res) => {
 router.post("/add-task", async (req, res) => {
   const { task, list_id } = req.body;
   const { user_id } = req.user;
+  const task_id = uuidv4();
 
-  const result = await Todo.find({ list_id: list_id.list_id });
+  const findRes = await Todo.find({ list_id: list_id, user_id });
 
-  await Todo.updateOne(
-    { list_id: list_id.list_id },
-    { $push: { tasks: task } }
+  const updateRes = await Todo.updateOne(
+    { list_id: list_id, user_id },
+    { $push: { tasks: { ...task, task_id } } }
   );
 
-  return res.json({ message: "Task saved!" });
+  return res.json({ message: "Task saved!", task_id });
 });
 
 //Remove task in todo list
 router.post("/remove-task", async (req, res) => {
   const { task_id, list_id } = req.body;
+  const { user_id } = req.user;
 
   await Todo.updateOne(
-    { list_id: list_id },
+    { list_id: list_id, user_id },
     { $pull: { tasks: { task_id: task_id } } }
   );
 
@@ -51,16 +53,17 @@ router.post("/remove-task", async (req, res) => {
 
 router.post("/update-task", async (req, res) => {
   const { task_id, list_id, text = null, done = null } = req.body;
+  const { user_id } = req.user;
 
   if (text)
     await Todo.updateOne(
-      { list_id: list_id, "tasks.task_id": task_id },
+      { list_id: list_id, "tasks.task_id": task_id, user_id },
       { $set: { "tasks.$.text": text } }
     );
 
   if (done)
     await Todo.updateOne(
-      { list_id: list_id, "tasks.task_id": task_id },
+      { list_id: list_id, "tasks.task_id": task_id, user_id },
       { $set: { "tasks.$.done": done === "true" } }
     );
 
@@ -70,6 +73,7 @@ router.post("/update-task", async (req, res) => {
 //Get todo list by list id
 router.post("/get-todo-list", async (req, res) => {
   const { list_id } = req.body;
+  const { user_id } = req.user;
 
   const result = await Todo.find({ list_id: list_id });
 

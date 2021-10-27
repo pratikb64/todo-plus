@@ -18,24 +18,23 @@ const TodoList = (props) => {
 	//dispatch(setLoading(false))
 
 	useEffect(() => {
-		if (auth.authState.isAuthenticated)
-			axios({
-				url: CONSTANTS.BASE_URL + "/v1/todo/get-todo-list",
-				method: "POST",
-				withCredentials: true,
-				data: { list_id }
+		axios({
+			url: CONSTANTS.BASE_URL + "/v1/todo/get-todo-list",
+			method: "POST",
+			withCredentials: true,
+			data: { list_id }
+		})
+			.then((d) => {
+				let tasks = d.data['tasks_data']['tasks']
+				dispatch(setTasksList(tasks))
+				dispatch(setLoading(false))
+				setIsFetching(false)
 			})
-				.then((d) => {
-					let tasks = d.data['tasks_data']['tasks']
-					dispatch(setTasksList(tasks))
-					dispatch(setLoading(false))
-					setIsFetching(false)
-				})
-				.catch(() => {
-					setError(true)
-					dispatch(setLoading(false))
-					setIsFetching(false)
-				});
+			.catch(() => {
+				setError(true)
+				dispatch(setLoading(false))
+				setIsFetching(false)
+			});
 		return () => { dispatch(setTasksList([])) }
 	}, []);
 
@@ -54,7 +53,7 @@ const TodoList = (props) => {
 						<div className='w-full h-[1px] bg-gray-600 my-7'></div>
 						{isFetching ? <RefreshIcon className='w-16 m-auto text-gray-300 transform rotate-180 animate-spin' /> : <>
 							{todoList.length > 0 ? todoList.map(task => {
-								return <div className='mb-3' key={task.task_id} >
+								return <div className='mb-3' key={10000 + Math.random() * 10000} >
 									<TodoListItem data={task} list_id={list_id} />
 								</div>
 							}) :

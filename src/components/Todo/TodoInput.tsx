@@ -1,14 +1,13 @@
 import { PlusIcon } from '@heroicons/react/outline'
 import axios from 'axios'
 import { useRef } from 'react'
-import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import CONSTANTS from '../../configs/Constants'
 import { AppDispatch, RootState } from '../../redux/store'
 import { addTask } from '../../redux/todoReducer'
 import { v4 as uuid } from 'uuid'
 
-const TodoInput = (list_id = null) => {
+const TodoInput = ({ list_id = null }) => {
 	const isAuthenticated = useSelector((state: RootState) => state.auth.authState.isAuthenticated)
 	const taskInput = useRef<HTMLInputElement>(null)
 	const dispatch = useDispatch<AppDispatch>()
