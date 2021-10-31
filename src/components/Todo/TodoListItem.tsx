@@ -7,12 +7,12 @@ import CONSTANTS from "../../configs/Constants"
 import { AppDispatch, RootState } from "../../redux/store"
 import { removeTask, updateTask } from "../../redux/todoReducer"
 import toast from 'react-hot-toast'
+import { motion } from "framer-motion"
 
-const TodoListItem = ({ data, list_id = null }) => {
+const TodoListItem = ({ data, index, list_id = null }) => {
 	const isAuthenticated = useSelector((state: RootState) => state.auth.authState.isAuthenticated)
 	const dispatch = useDispatch<AppDispatch>()
 	const taskText = useRef<HTMLInputElement>(null)
-
 	const handleChange = () => {
 		const inputData = taskText.current.value
 		dispatch(updateTask({ task_id: data.task_id, text: inputData }))
@@ -55,11 +55,14 @@ const TodoListItem = ({ data, list_id = null }) => {
 	}
 
 	return (
-		<div className='flex items-center justify-between'>
+		<motion.div initial={{ opacity: 0, y: 50 }} animate={{
+			opacity: [0, 1],
+			y: [50, 0],
+		}} transition={{ delay: 0.15 * index }} key={data.task_id} className='flex items-center justify-between'>
 			<div onClick={() => doneHandler()}>
-				{data.done ? <div className='bg-[#04C000] border-[#04C000] border-4 rounded-full cursor-pointer w-7 h-7 sm:w-9 sm:h-9 drop-shadow-xl'>
+				{data.done ? <motion.div className='bg-[#04C000] border-[#04C000] border-4 rounded-full cursor-pointer w-7 h-7 sm:w-9 sm:h-9 drop-shadow-xl'>
 					<CheckIcon />
-				</div> : <div className='w-7 h-7 sm:w-9 sm:h-9 border-4 border-[#2A2C3E] rounded-full cursor-pointer drop-shadow-xl'>
+				</motion.div> : <div className='w-7 h-7 sm:w-9 sm:h-9 border-4 border-[#2A2C3E] rounded-full cursor-pointer drop-shadow-xl'>
 				</div>
 				}
 			</div>
@@ -69,7 +72,7 @@ const TodoListItem = ({ data, list_id = null }) => {
 					<TrashIcon className='w-5' />
 				</button>
 			</div>
-		</div>
+		</motion.div>
 	)
 }
 

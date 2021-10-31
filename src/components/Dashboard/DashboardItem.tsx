@@ -1,5 +1,6 @@
 import { TrashIcon } from '@heroicons/react/outline'
 import axios from 'axios'
+import { motion } from 'framer-motion'
 import React from 'react'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
@@ -27,7 +28,10 @@ const DashboardItem = ({ index, date, list_id }) => {
 	}
 
 	return (
-		<div className='flex justify-between h-9 sm:h-12 bg-[#2A2C3E] w-full sm:w-[48%] my-2 rounded-md cursor-pointer'>
+		<motion.div initial={{ opacity: 0, y: 50 }} animate={{
+			opacity: [0, 1],
+			y: [50, 0],
+		}} transition={{ delay: 0.15 * (index - 1) }} key={list_id} className='flex justify-between h-9 sm:h-12 bg-[#2A2C3E] w-full sm:w-[48%] my-2 rounded-md cursor-pointer'>
 			<Link to={'/list/' + list_id} className='flex'>
 				<div className='flex items-center justify-center h-full text-xl font-light w-9 sm:text-xl sm:w-12'>{index}</div>
 				<div className='h-full w-[2px] bg-[#181a21]'></div>
@@ -38,7 +42,7 @@ const DashboardItem = ({ index, date, list_id }) => {
 			<button onClick={() => deleteHandler()} className='h-full p-2 bg-red-500 rounded-r-md sm:p-3 hover:bg-red-600 active:bg-red-700 '>
 				<TrashIcon className='w-5' />
 			</button>
-		</div>
+		</motion.div>
 	)
 }
 

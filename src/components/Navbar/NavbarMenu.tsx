@@ -1,6 +1,7 @@
 import { Menu } from '@headlessui/react'
 import { CogIcon, ChevronDownIcon, LogoutIcon, UserIcon } from '@heroicons/react/outline'
 import axios from 'axios'
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import CONSTANTS from '../../configs/Constants'
 
@@ -32,7 +33,10 @@ const NavbarMenu = ({ isAuthenticated, first_name, last_name }) => {
 					</div>
 				</Menu.Button>
 				<Menu.Items>
-					<div className='absolute z-10 drop-shadow-2xl w-full px-3 mt-2 bg-[#13151a] border border-gray-700 rounded-xl'>
+					<motion.div initial={{ opacity: 0, y: 10 }} animate={{
+						opacity: [0, 1],
+						y: [10, 0],
+					}} transition={{ delay: 0.15, duration: 0.2, ease: 'easeInOut' }} className='absolute z-10 drop-shadow-2xl w-full px-3 mt-2 bg-[#13151a] border border-gray-700 rounded-xl'>
 						{navigation.map(nav => {
 							return <Menu.Item key={nav.name}>
 								{({ active }) => (
@@ -49,7 +53,7 @@ const NavbarMenu = ({ isAuthenticated, first_name, last_name }) => {
 								)}
 							</Menu.Item>
 						})}
-					</div>
+					</motion.div>
 				</Menu.Items>
 			</Menu>
 		</div>

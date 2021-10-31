@@ -14,9 +14,9 @@ const Home = () => {
 				{isAuthenticated ? <Dashboard /> : <div className='max-w-lg m-auto mt-5 sm:mt-16'>
 					<TodoInput />
 					<div className='w-full h-[1px] bg-gray-600 my-7'></div>
-					{todoList.length > 0 ? todoList.map(task => {
+					{todoList.length > 0 ? todoList.map((task, i) => {
 						return <div className='mb-3' key={10000 + Math.random() * 10000} >
-							<TodoListItem data={task} />
+							<TodoListItem data={task} index={i + 1} />
 						</div>
 					}) :
 						<div className='flex flex-col items-center w-full'>

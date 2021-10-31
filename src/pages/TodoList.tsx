@@ -52,9 +52,9 @@ const TodoList = (props) => {
 						<TodoInput list_id={list_id} />
 						<div className='w-full h-[1px] bg-gray-600 my-7'></div>
 						{isFetching ? <RefreshIcon className='w-16 m-auto text-gray-300 transform rotate-180 animate-spin' /> : <>
-							{todoList.length > 0 ? todoList.map(task => {
-								return <div className='mb-3' key={10000 + Math.random() * 10000} >
-									<TodoListItem data={task} list_id={list_id} />
+							{todoList.length > 0 ? todoList.map((task, i) => {
+								return <div className='mb-3' key={task.task_id} >
+									<TodoListItem data={task} index={i} list_id={list_id} />
 								</div>
 							}) :
 								<div className='flex flex-col items-center w-full'>
