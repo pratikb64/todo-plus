@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navbar, TodoInput, TodoListItem, TodoListNotFound } from '../components'
+import { EncryptedContentModal, Navbar, TodoInput, TodoListItem, TodoListNotFound } from '../components'
 import CONSTANTS from '../configs/Constants'
 import { setLoading } from '../redux/appReducer'
 import { setAuth } from '../redux/authReducer'
@@ -15,6 +15,7 @@ const TodoList = (props) => {
 	const dispatch = useDispatch<AppDispatch>()
 	const [error, setError] = useState(false)
 	const [isFetching, setIsFetching] = useState(true)
+	const [isPasswordProtected, setIsPasswordProtected] = useState(false)
 	//dispatch(setLoading(false))
 
 	useEffect(() => {
@@ -30,8 +31,11 @@ const TodoList = (props) => {
 				dispatch(setLoading(false))
 				setIsFetching(false)
 			})
-			.catch(() => {
-				setError(true)
+			.catch((er) => {
+				if (er.response.status === 401)
+					setIsPasswordProtected(true)
+				else
+					setError(true)
 				dispatch(setLoading(false))
 				setIsFetching(false)
 			});
@@ -65,6 +69,7 @@ const TodoList = (props) => {
 					</div>
 				</div>
 			}
+			{isPasswordProtected && <EncryptedContentModal />}
 		</div>
 	)
 }

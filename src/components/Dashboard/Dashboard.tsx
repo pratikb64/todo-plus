@@ -52,7 +52,7 @@ const Dashboard = () => {
 					const created_at = new Date(list.date_created)
 					const date = created_at.toLocaleDateString()
 					const time = created_at.toLocaleTimeString()
-					return <DashboardItem key={list._id} index={index + 1} date={date + ' - ' + time} list_id={list.list_id} />
+					return <DashboardItem key={list._id} index={index + 1} date={date + ' - ' + time} list_id={list.list_id} visibility={list.visibility} secret_code={list.secret_code} />
 				})}
 			</div>}
 		</div>

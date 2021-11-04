@@ -72,15 +72,18 @@ router.post("/update-task", async (req, res) => {
 
 //Get todo list by list id
 router.post("/get-todo-list", async (req, res) => {
-  const { list_id } = req.body;
+  const { list_id, secret_code } = req.body;
   const { user_id } = req.user;
 
   const result = await Todo.find({ list_id: list_id });
 
   if (!result[0]) return res.status(404).json({ message: "List not found!" });
 
-  if (result.visibility === "private")
+  if (result[0].visibility === "private" && result[0].user_id !== user_id)
     return res.status(403).json({ message: "Private tasks list!" });
+
+  if (result[0].secret_code !== null && result[0].secret_code !== secret_code)
+    return res.status(401).json({ message: "Password did not match!" });
 
   return res.json({ tasks_data: result[0] });
 });
@@ -91,6 +94,19 @@ router.post("/remove-todo-list", async (req, res) => {
   const { user_id } = req.user;
 
   const result = await Todo.findOneAndDelete({ list_id: list_id, user_id });
+
+  return res.json({ tasks_data: result[0] });
+});
+
+//Update todo list by list id
+router.post("/update-todo-list", async (req, res) => {
+  const { list_id, visibility, secret_code } = req.body;
+  const { user_id } = req.user;
+
+  const result = await Todo.findOneAndUpdate(
+    { list_id: list_id, user_id },
+    { visibility, secret_code }
+  );
 
   return res.json({ tasks_data: result[0] });
 });
@@ -107,6 +123,7 @@ router.get("/get-todo-lists", async (req, res) => {
       tasks: 1,
       visibility: 1,
       date_created: 1,
+      secret_code: 1,
     }
   );
   return res.json({ task_lists: searchResult });
