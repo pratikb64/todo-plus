@@ -5,10 +5,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const verifyToken = async (req, res, next) => {
   const api_key = req.query.token || req.headers["token"];
+  req.user = {};
 
   if (api_key) {
     let isKeyValid = await User.findOne({ api_key: api_key });
-    req.user = {};
     if (isKeyValid) {
       req.api_key = api_key;
       req.user.user_id = isKeyValid._id;
@@ -22,6 +22,7 @@ const verifyToken = async (req, res, next) => {
   if (req.headers.cookie) token = req.headers.cookie.split("=")[1];
 
   if (!token) {
+    if (req._parsedUrl.pathname === "/v1/todo/get-todo-list") return next();
     return res.status(403).send("Access denied!");
   }
 

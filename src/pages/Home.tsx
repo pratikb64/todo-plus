@@ -15,7 +15,7 @@ const Home = () => {
 					<TodoInput />
 					<div className='w-full h-[1px] bg-gray-600 my-7'></div>
 					{todoList.length > 0 ? todoList.map((task, i) => {
-						return <div className='mb-3' key={10000 + Math.random() * 10000} >
+						return <div className='mb-3' key={task.task_id} >
 							<TodoListItem data={task} index={i + 1} />
 						</div>
 					}) :

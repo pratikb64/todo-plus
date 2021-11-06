@@ -8,6 +8,7 @@ import { setAuth } from '../redux/authReducer'
 import { AppDispatch, RootState } from '../redux/store'
 import { setTasksList, updateTask } from '../redux/todoReducer'
 import { DocumentAddIcon, RefreshIcon } from '@heroicons/react/outline'
+import toast from 'react-hot-toast'
 
 const TodoList = (props) => {
 	const list_id = props.match.params.id
@@ -18,29 +19,42 @@ const TodoList = (props) => {
 	const [isPasswordProtected, setIsPasswordProtected] = useState(false)
 	//dispatch(setLoading(false))
 
-	useEffect(() => {
+	const getTodoList = (code = null) => {
+		!isFetching && setIsFetching(true)
 		axios({
 			url: CONSTANTS.BASE_URL + "/v1/todo/get-todo-list",
 			method: "POST",
 			withCredentials: true,
-			data: { list_id }
+			data: { list_id, secret_code: code }
 		})
 			.then((d) => {
 				let tasks = d.data['tasks_data']['tasks']
 				dispatch(setTasksList(tasks))
 				dispatch(setLoading(false))
+				code && toast.success('Decrypted!', { duration: 2500 })
 				setIsFetching(false)
 			})
 			.catch((er) => {
-				if (er.response.status === 401)
+				if (er.response.status === 401) {
 					setIsPasswordProtected(true)
+					toast.error('Enter correct code to view list!', { duration: 1500 })
+				}
 				else
 					setError(true)
 				dispatch(setLoading(false))
 				setIsFetching(false)
 			});
+	}
+
+	const getTodoListWithCode = (code) => {
+		getTodoList(code)
+	}
+
+	useEffect(() => {
+		getTodoList()
 		return () => { dispatch(setTasksList([])) }
 	}, []);
+
 
 	return (
 		<div className='m-auto max-w-[90vw] xl:max-w-7xl'>
@@ -69,7 +83,7 @@ const TodoList = (props) => {
 					</div>
 				</div>
 			}
-			{isPasswordProtected && <EncryptedContentModal />}
+			{isPasswordProtected && <EncryptedContentModal getTodoListWithCode={getTodoListWithCode} setIsPasswordProtected={setIsPasswordProtected} />}
 		</div>
 	)
 }

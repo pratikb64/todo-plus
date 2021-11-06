@@ -102,10 +102,11 @@ router.post("/remove-todo-list", async (req, res) => {
 router.post("/update-todo-list", async (req, res) => {
   const { list_id, visibility, secret_code } = req.body;
   const { user_id } = req.user;
+  const code = secret_code === "" ? null : secret_code;
 
   const result = await Todo.findOneAndUpdate(
     { list_id: list_id, user_id },
-    { visibility, secret_code }
+    { visibility, secret_code: code }
   );
 
   return res.json({ tasks_data: result[0] });

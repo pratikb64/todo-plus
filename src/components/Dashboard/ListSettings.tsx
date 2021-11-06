@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { XIcon } from '@heroicons/react/outline'
 import toast from 'react-hot-toast'
 import axios from 'axios'
@@ -13,7 +13,7 @@ const ListSettings = ({ setSettingsState, list_id, visibility, secret_code }) =>
 
 	const saveHandler = () => {
 
-		const loading = toast.loading('Deleting todo list!')
+		const loading = toast.loading('Updating settings!')
 		axios({
 			url: CONSTANTS.BASE_URL + "/v1/todo/update-todo-list",
 			method: "POST",
@@ -21,7 +21,7 @@ const ListSettings = ({ setSettingsState, list_id, visibility, secret_code }) =>
 			data: { ...formInputs, list_id }
 		})
 			.then((d) => {
-				toast.success('Todo list deleted!', { id: loading })
+				toast.success('Settings updated!', { id: loading })
 			})
 			.catch(er => toast.error(er, { id: loading }))
 		setSettingsState(false)
@@ -55,7 +55,7 @@ const ListSettings = ({ setSettingsState, list_id, visibility, secret_code }) =>
 					<div className='flex mb-6'>
 						<label htmlFor='visibility' className='w-1/2 text-lg'>Visibility</label>
 						<div className='w-1/2'>
-							<select defaultValue={formInputs.visibility} onChange={event => changeHandler(event)} className='w-full p-1 text-black rounded-lg' name="visibility" id="visibility">
+							<select value={formInputs.visibility} onChange={event => changeHandler(event)} className='w-full p-1 text-black rounded-lg' name="visibility" id="visibility">
 								<option value="public">Public</option>
 								<option value="private">Private</option>
 							</select>
@@ -64,7 +64,7 @@ const ListSettings = ({ setSettingsState, list_id, visibility, secret_code }) =>
 					<div className='mb-6 '>
 						<div className='flex'>
 							<label htmlFor='secret_code' className='w-1/2 text-lg'>Password</label>
-							<div className='w-1/2'><input defaultValue={formInputs.secret_code} onChange={event => changeHandler(event)} className='w-full p-1 pl-2 text-black rounded-lg' type="text" name='secret_code' id='secret_code' /></div>
+							<div className='w-1/2'><input value={formInputs.secret_code || ''} onChange={event => changeHandler(event)} className='w-full p-1 pl-2 text-black rounded-lg' type="text" name='secret_code' id='secret_code' /></div>
 						</div>
 						<div className='mt-2 text-sm text-gray-400'>(Keep it empty to remove password protection)</div>
 					</div>
