@@ -19,6 +19,7 @@ const Register = lazy(() => import('./pages/Register'))
 const Settings = lazy(() => import('./pages/Settings'))
 const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const TodoList = lazy(() => import('./pages/TodoList'))
+const ApiDocs = lazy(() => import('./pages/ApiDocs'))
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
         }} />
         <Switch>
           <ProtectedRoute path='/settings' component={Settings} />
+          <Route path='/api-docs' component={ApiDocs} />
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
           <Route path='/reset-password' component={ResetPassword} />

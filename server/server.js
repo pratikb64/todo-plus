@@ -13,7 +13,7 @@ const auth = require("./middlewares/auth");
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://localhost:5000"],
     optionsSuccessStatus: 200,
     credentials: true,
   })
@@ -22,13 +22,10 @@ app.use(cookieParser());
 app.use(express.json());
 
 const apiRequestLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 5, // limit each IP to 2 requests per windowMs
-  skip: (req, res) => {
-    return !req.api_key;
-  },
+  windowMs: 1 * 60 * 60 * 1000, // 60 minutes
+  max: 100, // limit each IP to 'n' requests per windowMs
   keyGenerator: (req, res) => {
-    return req.api_key;
+    return req.api_key || req.ip;
   },
 });
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { LoadingModal, Navbar } from "../components";
 import CONSTANTS from "../configs/Constants";
 import { RootState } from "../redux/store";
@@ -192,6 +193,13 @@ const Settings = () => {
 										Generate key
 									</button>
 								)}
+							</div>
+							<div className='mt-4'>
+								<Link to='/api-docs'>
+									<button className="w-full px-4 py-2 mr-3 text-sm bg-blue-600 rounded-lg sm:w-auto hover:bg-blue-700 active:bg-blue-800">
+										API Documentation
+									</button>
+								</Link>
 							</div>
 						</div>
 					</div>

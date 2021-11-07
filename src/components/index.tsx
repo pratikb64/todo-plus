@@ -13,3 +13,5 @@ export { default as ListSettings } from './Dashboard/ListSettings'
 
 export { default as debounce } from './Utils/debounce'
 export { default as ProtectedRoute } from './Utils/ProtectedRoute'
+
+export { default as ApiCard } from './ApiDocumentation/ApiCard'

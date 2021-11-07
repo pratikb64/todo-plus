@@ -1,12 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const Todo = require("../models/Todo");
-const { ObjectId } = require("mongodb");
 const { v4: uuidv4 } = require("uuid");
+
+const isEmpty = (variable) => {
+  return variable === "" || variable === null || variable === undefined;
+};
 
 //Create new todo list
 router.post("/create-todo-list", async (req, res) => {
   const { visibility, secret_code } = req.body;
+
+  if (isEmpty(visibility))
+    return res.status(400).json({ message: "'visibility' field is required" });
+
   const list_id = uuidv4();
   const { user_id } = req.user;
   const date = new Date();
@@ -26,6 +33,12 @@ router.post("/create-todo-list", async (req, res) => {
 router.post("/add-task", async (req, res) => {
   const { task, list_id } = req.body;
   const { user_id } = req.user;
+
+  if (isEmpty(task) || isEmpty(list_id))
+    return res
+      .status(400)
+      .json({ message: "'list_id' and 'task' fields are required" });
+
   const task_id = uuidv4();
 
   const findRes = await Todo.find({ list_id: list_id, user_id });
@@ -43,6 +56,11 @@ router.post("/remove-task", async (req, res) => {
   const { task_id, list_id } = req.body;
   const { user_id } = req.user;
 
+  if (isEmpty(task_id) || isEmpty(list_id))
+    return res
+      .status(400)
+      .json({ message: "'list_id' and 'task_id' fields are required" });
+
   await Todo.updateOne(
     { list_id: list_id, user_id },
     { $pull: { tasks: { task_id: task_id } } }
@@ -54,6 +72,11 @@ router.post("/remove-task", async (req, res) => {
 router.post("/update-task", async (req, res) => {
   const { task_id, list_id, text = null, done = null } = req.body;
   const { user_id } = req.user;
+
+  if (isEmpty(task_id) || isEmpty(list_id))
+    return res
+      .status(400)
+      .json({ message: "'list_id' and 'task_id' fields are required" });
 
   if (text)
     await Todo.updateOne(
@@ -67,13 +90,16 @@ router.post("/update-task", async (req, res) => {
       { $set: { "tasks.$.done": done === "true" } }
     );
 
-  res.json({});
+  res.json({ message: "Task updated!" });
 });
 
 //Get todo list by list id
 router.post("/get-todo-list", async (req, res) => {
   const { list_id, secret_code } = req.body;
   const { user_id } = req.user;
+
+  if (isEmpty(list_id))
+    return res.status(400).json({ message: "'list_id' field is required" });
 
   const result = await Todo.find({ list_id: list_id });
 
@@ -93,9 +119,12 @@ router.post("/remove-todo-list", async (req, res) => {
   const { list_id } = req.body;
   const { user_id } = req.user;
 
+  if (isEmpty(list_id))
+    return res.status(400).json({ message: "'list_id' field is required" });
+
   const result = await Todo.findOneAndDelete({ list_id: list_id, user_id });
 
-  return res.json({ tasks_data: result[0] });
+  return res.json({ message: "Todo list deleted!" });
 });
 
 //Update todo list by list id
@@ -104,24 +133,29 @@ router.post("/update-todo-list", async (req, res) => {
   const { user_id } = req.user;
   const code = secret_code === "" ? null : secret_code;
 
+  if (isEmpty(list_id))
+    return res.status(400).json({ message: "'list_id' field is required" });
+
   const result = await Todo.findOneAndUpdate(
     { list_id: list_id, user_id },
     { visibility, secret_code: code }
   );
 
-  return res.json({ tasks_data: result[0] });
+  return res.json({ message: "Todo list updated!" });
 });
 
 //Get all todo list of user by user id
 router.get("/get-todo-lists", async (req, res) => {
   const { user_id } = req.user;
 
+  if (isEmpty(user_id))
+    return res.status(400).json({ message: "'user_id' field is required" });
+
   const searchResult = await Todo.find(
     { user_id: user_id },
     {
       list_id: 1,
       user_id: 1,
-      tasks: 1,
       visibility: 1,
       date_created: 1,
       secret_code: 1,
