@@ -13,7 +13,7 @@ const auth = require("./middlewares/auth");
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5000"],
+    origin: ["http://localhost:3000", "https://todo-plus.netlify.app"],
     optionsSuccessStatus: 200,
     credentials: true,
   })
