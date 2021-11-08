@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("./config/database").connect();
 const rateLimit = require("express-rate-limit");
+const { shouldSendSameSiteNone } = require("should-send-same-site-none");
 
 const user = require("./routes/users");
 const todo = require("./routes/todo");
@@ -18,6 +19,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(shouldSendSameSiteNone);
 app.use(cookieParser());
 app.use(express.json());
 

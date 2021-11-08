@@ -57,6 +57,8 @@ router.post("/login", async (req, res) => {
     .cookie("session-token", token, {
       maxAge: sevenDaysToSeconds,
       httpOnly: true,
+      sameSite: "none",
+      secure: true,
       /* ,
 		secure: process.env.NODE_ENV === 'production' ? true : false */
     })
