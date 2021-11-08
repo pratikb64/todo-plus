@@ -83,10 +83,11 @@ router.post("/update-task", async (req, res) => {
       .status(400)
       .json({ message: "'list_id' and 'task_id' fields are required" });
 
-  if (text.length > 128)
-    return res
-      .status(400)
-      .json({ message: "task text cannot be more than 128 characters" });
+  if (text)
+    if (text.length > 128)
+      return res
+        .status(400)
+        .json({ message: "task text cannot be more than 128 characters" });
 
   if (text)
     await Todo.updateOne(
