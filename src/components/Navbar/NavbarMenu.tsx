@@ -1,5 +1,5 @@
 import { Menu } from '@headlessui/react'
-import { CogIcon, ChevronDownIcon, LogoutIcon, UserIcon } from '@heroicons/react/outline'
+import { CogIcon, ChevronDownIcon, LogoutIcon, UserIcon, DocumentReportIcon } from '@heroicons/react/outline'
 import axios from 'axios'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,7 @@ const NavbarMenu = ({ isAuthenticated, first_name, last_name }) => {
 
 	const navigation = [
 		{ name: 'Settings', href: '/settings', icon: <CogIcon /> },
+		{ name: 'API docs', href: '/api-docs', icon: <DocumentReportIcon /> },
 		{ name: 'Logout', href: '', icon: <LogoutIcon /> },
 	]
 

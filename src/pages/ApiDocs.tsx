@@ -234,6 +234,11 @@ const ApiDocs = () => {
 				<div className='text-3xl text-center'>
 					API Documentation
 				</div>
+				<hr className='my-4 border-gray-600' />
+				<div className='mt-4'>
+					Base url : <i>https://todopluss.herokuapp.com</i> <br />
+					To make API calls add <span className='font-semibold'>'token'</span> as header and your API key as value in your request headers.
+				</div>
 				{doc.map((data, i) => {
 					return <div className='mb-10' key={i}>
 						<hr className='my-4 border-gray-600' />

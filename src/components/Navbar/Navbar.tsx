@@ -1,6 +1,6 @@
 import { Disclosure } from '@headlessui/react'
 import NavbarMenu from './NavbarMenu'
-import { CogIcon, LoginIcon, LogoutIcon, MenuAlt3Icon, XIcon } from '@heroicons/react/outline'
+import { CogIcon, LoginIcon, LogoutIcon, MenuAlt3Icon, XIcon, DocumentReportIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
@@ -13,6 +13,7 @@ const Navbar = () => {
 	const navigation = [
 		{ name: 'Login', href: '/login', icon: <LoginIcon /> },
 		{ name: 'Register', href: '/register', icon: <LogoutIcon /> },
+		{ name: 'API Docs', href: '/api-docs', icon: <DocumentReportIcon /> },
 		{ name: 'Settings', href: '/settings', icon: <CogIcon /> },
 		{ name: 'Logout', href: '', icon: <LogoutIcon /> },
 	]
@@ -46,12 +47,15 @@ const Navbar = () => {
 						</Disclosure.Button>
 						<div className='hidden sm:block'>
 							{isAuthenticated ? <NavbarMenu isAuthenticated={isAuthenticated} first_name={first_name} last_name={last_name} /> :
-								<div className='flex justify-between w-36'>
+								<div className='flex justify-between w-52'>
 									<Link to='/login'>
 										Login
 									</Link>
 									<Link to='/register'>
 										Register
+									</Link>
+									<Link to='/api-docs'>
+										API Docs
 									</Link>
 								</div>}
 						</div>
